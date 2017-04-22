@@ -2,13 +2,13 @@
     https://www.github.com/relloller/wordisbond
 */
 
+module.exports = {
+    generateNewGame:newBoardAndWords
+}
 var fs = require('fs');
-var dictAZ = fs.readFileSync('dictAZ.json', 'UTF8'); //list of english words
-var dictAZjson = JSON.parse(dictAZ);
-console.log('dictAZjson.length', dictAZjson.length);
 
-//distribution of letters according to wikipedia
-var abcFreq = 'aaaaaaaabbcccdddeeeeeeeeeeeeffgghhhhhhiiiiiiijkllllmmnnnnnnnooooooooppqrrrrrrsssssstttttttttuuuvwwxyyz';
+//distribution of letters in english words according to wikipedia
+var abcFreq = 'aaaaaaaabbcccdddeeeeeeeeeeeefffggghhhhhhiiiiiiijjkkllllmmmnnnnnnnooooooooppqrrrrrrsssssstttttttttuuuvvwwwxyyyz';
 
 //creates new board(string of letters)
 function createBoard(boardsize){
@@ -91,60 +91,64 @@ function adjLtrs(indx, strA) {
 }
 
 //creates object with an array of indices for each letter, and adjacent letters for each index
-function boardObjF(strA) {
-    var boardObjTemp = {};
+function boardF(strA) {
+    var boardTemp = {};
     for (var i = 0; i < strA.length; i++) {
-        boardObjTemp[i] = adjLtrs(i, strA);
-        if (!boardObjTemp[strA[i]]) boardObjTemp[strA[i]] = [];
-        boardObjTemp[strA[i]].push(i);
+        boardTemp[i] = adjLtrs(i, strA);
+        if (!boardTemp[strA[i]]) boardTemp[strA[i]] = [];
+        boardTemp[strA[i]].push(i);
     }
-    return boardObjTemp;
+    return boardTemp;
 }
 
-//checks word **refactor for global boardObj
-function checkWord(word) {
-    if (boardObj[word.charAt(0)]) {
-        for (var i = 0; i < boardObj[word.charAt(0)].length; i++) {
-            if (checkNextLetter(word, boardObj[word.charAt(0)][i])) return true;
+//checks word **refactor for global board
+function checkWord(board, word) {
+    if (board[word.charAt(0)]) {
+        for (var i = 0; i < board[word.charAt(0)].length; i++) {
+            if (checkNextLetter(board, word, board[word.charAt(0)][i])) return true;
         }
     }
     return false;
 }
 
-//checks next letter recursively *needs a refactor for global boardObj..also...looks crazy
-function checkNextLetter(word, ltrCurrentIndx, indxArr = [ltrCurrentIndx], counter = 0) {
+//checks next letter recursively *needs a refactor for global board..also...looks crazy
+function checkNextLetter(board, word, ltrCurrentIndx, indxArr = [ltrCurrentIndx], counter = 0) {
     if (indxArr.length === word.length) return true;
-    if (boardObj[ltrCurrentIndx][word.charAt(counter + 1)]) {
-        for (var i = 0; i < boardObj[ltrCurrentIndx][word.charAt(counter + 1)].length; i++) {
+    if (board[ltrCurrentIndx][word.charAt(counter + 1)]) {
+        for (var i = 0; i < board[ltrCurrentIndx][word.charAt(counter + 1)].length; i++) {
             if (!indxArr.some(e => {
-                    return e === boardObj[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()]
+                    return e === board[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()]
                 })) {
-                if (checkNextLetter(word, boardObj[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()], indxArr.concat([boardObj[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()]]), counter + 1)) return true;
+                if (checkNextLetter(board, word, board[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()], indxArr.concat([board[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()]]), counter + 1)) return true;
             }
         }
     }
 }
 
-//checks each word in dictionary that is at least 4 letters
-function checkDict(dict) {
-    var sols = [];
+//checks each word in dictionary that is at least 3 letters
+function checkDict(board,dict) {
+    // var sols = [];
+    var solsObj = {};
+    var solsCount = 0;
     for (var i = 0; i < dict.length; i++) {
-        if (dict[i].length > 3 && checkWord(dict[i])) sols.push(dict[i]);
+        if (checkWord(board, dict[i])) {
+            // sols.push(dict[i]);
+            solsObj[dict[i]]= ++solsCount;
+        }
     }
-    return sols;
+    return solsObj;
 }
 
 
-
-var rndStr = createBoard(6); //creates 6x6 board
-var strArr = rndStr.split(''); 
-printB(rndStr); //prints board to console
-var boardObj = boardObjF(strArr); 
-console.log('boardObj',boardObj );
-
-console.time('wordFind');
-var foundWords = checkDict(dictAZjson);
-console.timeEnd('wordFind');
-
-printB(rndStr);
-console.log('foundWords', foundWords, foundWords.length);
+function newBoardAndWords(){
+    var rndStr = createBoard(6); //creates 6x6 board
+    var strArr = rndStr.split(''); 
+    var board = boardF(strArr); 
+    var dictAZ = fs.readFileSync('./wordsolver/dictAZ3.json', 'UTF8'); //list of english words
+    var dictAZjson = JSON.parse(dictAZ);
+    var foundWords = checkDict(board, dictAZjson);
+    dictAZ=null;
+    dictAZjson=null;
+    return {currentBoard: strArr, wordList: foundWords}
+}
+console.time('wordsolver');
