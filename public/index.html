@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word is Bond</title>
+    <link rel="stylesheet" href="css/styleflexbox.css" type="text/css" />
+    <script src="js/firebase.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+</head>
+
+<body>
+    <div id="navProfile"></div>
+    <div id="wordUpBoard">
+        <div class="rowsContainer">
+            <div class="rows">A</div>
+            <div class="rows">B</div>
+            <div class="rows">C</div>
+            <div class="rows">D</div>
+            <div class="rows">E</div>
+            <div class="rows">F</div>
+        </div>
+        <div class="rowsContainer">
+            <div class="rows">A</div>
+            <div class="rows">B</div>
+            <div class="rows">C</div>
+            <div class="rows">D</div>
+            <div class="rows">E</div>
+            <div class="rows">F</div>
+        </div>
+        <div class="rowsContainer">
+            <div class="rows">A</div>
+            <div class="rows">B</div>
+            <div class="rows">C</div>
+            <div class="rows">D</div>
+            <div class="rows">E</div>
+            <div class="rows">F</div>
+        </div>
+        <div class="rowsContainer">
+            <div class="rows">A</div>
+            <div class="rows">B</div>
+            <div class="rows">C</div>
+            <div class="rows">D</div>
+            <div class="rows">E</div>
+            <div class="rows">F</div>
+        </div>
+        <div class="rowsContainer">
+            <div class="rows">A</div>
+            <div class="rows">B</div>
+            <div class="rows">C</div>
+            <div class="rows">D</div>
+            <div class="rows">E</div>
+            <div class="rows">F</div>
+        </div>
+        <div class="rowsContainer">
+            <div class="rows">A</div>
+            <div class="rows">B</div>
+            <div class="rows">C</div>
+            <div class="rows">D</div>
+            <div class="rows">E</div>
+            <div class="rows">F</div>
+        </div>
+    </div>
+  
+    
+        <div id="statsDiv">
+            <div id="pointsContainer">
+                <div id="pointsDiv">Score: 0</div>
+                <div id="pointsWordDiv"></div>
+            </div>
+            <div id="timerDiv">0:00</div>
+            <div id="rankingDiv">Rank</div>
+        </div>
+        <br>
+        <div id="bondedWord"></div>
+        <div class="fillers">
+            <span id="userDiv"></span>
+            <br>
+            <span id="highScore"></span>
+            <br>
+            <span id="logOut">Logout</span>
+        </div>
+        <div id="foundWordsList"></div>
+        <div class="fillers"> </div>
+        <div class="fillersfooter"> </div>
+    
+    <div class="overlay">
+        <div id="loginForm">
+            <input type="text" class="zocial-dribbble" placeholder="Enter your email" id="eMail" />
+            <input type="password" placeholder="Password" id="passWord" />
+            <input type="submit" value="Login" id="loginButton" />
+            <a id="lostpassword" href="">Forgot your password?<br></a>
+            <p id="registerLink">
+                <br>New User? Signup for free.
+                <input type="submit" value="Signup" id="signUpButtonDisplay" />
+            </p>
+            <p id="guestLink">I hate making accounts. Let me in.
+                <br>
+                <input type="submit" value="Guest Access" id="guestButton" />
+            </p>
+        </div>
+        <div id='signUpForm'>
+            <input type="text" class="zocial-dribbble" placeholder="Choose your username" id="userNameSignUp" />
+            <input type="text" class="zocial-dribbble" placeholder="Enter your email" id="eMailSignUp" />
+            <input type="password" placeholder="Password" id="passWordSignUp" />
+            <input type="submit" value="Sign up" id="registerButton" />
+            <p id="alreadyAccount">
+                <br>Already have an account? Login here.</p>
+        </div>
+    </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/userAuth.js"></script>
+    <script src="js/wordUpDesktop.js"></script>
+</body>
+<!-- relloller wuz here -->
+
+</html>
