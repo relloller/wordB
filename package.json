@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://www.github.com/relloller/wordisbond"
   },
-  "author": "",
+  "author": "vshaw168@gmail.com",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.1",
