@@ -5,6 +5,7 @@
 module.exports = {
     generateNewGame:newBoardAndWords
 }
+
 var fs = require('fs');
 
 //distribution of letters in english words according to wikipedia
@@ -14,9 +15,7 @@ var abcFreq = 'aaaaaaaabbcccdddeeeeeeeeeeeefffggghhhhhhiiiiiiijjkkllllmmmnnnnnnn
 function createBoard(boardsize){
     var strLength = boardsize*boardsize;
     var strTemp = '';
-    for (var i = 0; i < strLength; i++) {
-        strTemp+=abcFreq.charAt(Math.floor(Math.random()*abcFreq.length));
-    }
+    for (var i = 0; i < strLength; i++) strTemp+=abcFreq.charAt(Math.floor(Math.random()*abcFreq.length));
     return strTemp;
 }
 
@@ -116,26 +115,18 @@ function checkNextLetter(board, word, ltrCurrentIndx, indxArr = [ltrCurrentIndx]
     if (indxArr.length === word.length) return true;
     if (board[ltrCurrentIndx][word.charAt(counter + 1)]) {
         for (var i = 0; i < board[ltrCurrentIndx][word.charAt(counter + 1)].length; i++) {
-            if (!indxArr.some(e => {
-                    return e === board[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()]
-                })) {
+            if (!indxArr.some(e => {return e === board[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()]})) {
                 if (checkNextLetter(board, word, board[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()], indxArr.concat([board[ltrCurrentIndx][word.charAt(counter + 1)][i.toString()]]), counter + 1)) return true;
             }
         }
     }
 }
 
-//checks each word in dictionary that is at least 3 letters
+//checks each word in json word list 
 function checkDict(board,dict) {
-    // var sols = [];
     var solsObj = {};
     var solsCount = 0;
-    for (var i = 0; i < dict.length; i++) {
-        if (checkWord(board, dict[i])) {
-            // sols.push(dict[i]);
-            solsObj[dict[i]]= ++solsCount;
-        }
-    }
+    for (var i = 0; i < dict.length; i++) if (checkWord(board, dict[i])) solsObj[dict[i]]= ++solsCount;
     return solsObj;
 }
 
@@ -144,11 +135,11 @@ function newBoardAndWords(){
     var rndStr = createBoard(6); //creates 6x6 board
     var strArr = rndStr.split(''); 
     var board = boardF(strArr); 
-    var dictAZ = fs.readFileSync('./wordsolver/dictAZ3.json', 'UTF8'); //list of english words
+    var dictAZ = fs.readFileSync('./wordsolver/dictAZ3.json', 'UTF8'); //list of english words 3 letters or longer
     var dictAZjson = JSON.parse(dictAZ);
     var foundWords = checkDict(board, dictAZjson);
     dictAZ=null;
     dictAZjson=null;
     return {currentBoard: strArr, wordList: foundWords}
 }
-console.time('wordsolver');
+
