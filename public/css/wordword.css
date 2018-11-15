@@ -1,0 +1,279 @@
+/*portrait*/
+
+body {
+    background-color: #03a9f4;
+    font-family: Helvetica, sans-serif;
+    color: #2f231a;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.bodyContainer {
+    width: 100vw;
+    height: 100vh;
+}
+
+
+
+.letterCell {
+    display: flex;
+    font-size: 10vw;
+    width: 16.5vw;
+    height: 16.5vw;
+    background-color: gold;
+    vertical-align: middle;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 3px 6px black;
+    border-radius: 18%;
+    margin: 1.5vw;
+    flex: 1;
+}
+
+#wordSolutionsList {
+    /*float: left;*/
+    color: beige;
+    text-align: center;
+    /*bottom: 7vh;*/
+    height: 16vh;
+    min-width: 60vw;
+    background-color: #007fff;
+    border-radius: 6%;
+    overflow-y: scroll;
+    /*box-sizing: border-box;*/
+    font-size: 6vw;
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+    padding-bottom: 7px;
+    margin-left: auto;
+    margin-right: auto;
+    /*margin-bottom:auto;*/
+}
+
+#wordSolutionsList.hideSolutions {
+    display: none;
+}
+
+
+.rowsmini {
+    font-size: 6vw;
+    min-width: 8.5vw;
+    color: beige;
+    background-color: #e0115f;
+    letter-spacing: 0em;
+    max-width: 8.5vw;
+    min-height: 8.5vw;
+    max-height: 8.5vw;
+    line-height: 8.5vw;
+    text-align: center;
+    margin: 0.25vw;
+    text-align: center;
+    -ms-box-shadow: -1px 2px 3px black;
+    -moz-box-shadow: -1px 2px 3px black;
+    -webkit-box-shadow: -1px 2px 3px black;
+    box-shadow: -1px 2px 3px black;
+    flex: 1;
+}
+
+.miniValid {
+    color: beige;
+    border-radius: 10%;
+    box-shadow: 0px 1px 2px black;
+    background-color: #009a00;
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+#currentWordDiv {
+    min-height: 12vw;
+    max-height: 12vw;
+    max-width: 100vw;
+    min-width: 100vw;
+    text-transform: uppercase;
+    font-size: 2.0em;
+    letter-spacing: 0.125em;
+    line-height: 9vh;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 1vw;
+    margin-bottom: 3vw;
+    color: #dd2c00;
+    box-sizing: border-box;
+    text-decoration: none;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    /*margin-right: 2vw;*/
+    /*background-color: #007fff;*/
+    /*transition: all 2.0s ease-in;*/
+}
+
+#currentWordDiv.hideSolutions {
+    display: none;
+}
+
+
+.boardRow {
+    display: flex;
+    margin-right: 1vw;
+    margin-left: 1vw;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+#wordUpBoard {
+    width: 98vw;
+    height: 98vw;
+    margin-right: auto;
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+#testDiv {}
+
+
+@media only screen and (min-width: 600px) {
+    .letterCell {
+        display: flex;
+        font-size: 6vw;
+        max-width: 12vw;
+        min-width: 12vw;
+        max-height: 12vw;
+        min-height: 12vw;
+        background-color: gold;
+        vertical-align: middle;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 3px 6px black;
+        border-radius: 18%;
+        margin: 1vw;
+        flex: 1;
+    }
+
+    #wordUpBoard {
+        min-width: 90vw;
+        max-width: 90vw;
+        min-height: 65vw;
+        max-height: 65vw;
+        margin-left: auto;
+        margin-top: 2vw;
+        margin-right: auto;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .boardRow {
+        min-width: 65vw;
+        max-width: 65vw;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .statsColumn {
+        flex-direction: row;
+        margin-top: 9vw;
+        font-size: 3vw;
+        min-width: 100vw;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100vw;
+        min-height: 8vw;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
+.wordBondedValid {
+    background-color: #009a00;
+    transition: all 0.4s ease-in;
+    color: white;
+}
+
+.solution {
+    box-shadow: 0px 1px 2px black;
+    background-color: #009a00;
+    color: beige;
+    /*transition: all 0.10s ease-in;*/
+}
+
+.selectedSolution {
+    /*background-color: #e0115f;*/
+    background-color: #009a00;
+    color: beige;
+
+    /*font-weight: bold;*/
+}
+
+.wordValid {
+    color: beige;
+    border-radius: 15%;
+    /*font-size: 12vw;*/
+    box-shadow: 0px 3px 6px black;
+    background-color: #009a00;
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+.wordInvalid {
+    box-shadow: 0px 3px 6px black;
+    border-radius: 15%;
+    font-size: 11vw;
+    /*background-color: #007fff;*/
+}
+
+.pressed {
+    box-shadow: 0px 1px 2px black;
+    background-color: #e0115f;
+    color: beige;
+    /*transition: all 0.10s ease-in;*/
+}
+
+.statsColumn {
+    display: flex;
+    flex-direction: row;
+    font-size: 5vw;
+    min-width: 99vw;
+    height: 8vh;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#timerDiv {
+    flex: 1;
+    height: 6vh;
+    font-size: 3vw;
+    text-align: center;
+}
+
+#scoreDiv {
+    flex: 1;
+    height: 6vh;
+    font-size: 3vw;
+    text-align: center;
+}
+
+#rankDiv {
+    flex: 1;
+    height: 6vh;
+    font-size: 3vw;
+    text-align: center;
+}

@@ -1,128 +1,155 @@
 /*
 https://www.github.com/relloller/wordisbond 
 */
-var http = require('http');
-var socketio = require('socket.io');
-var express = require('express');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
-var router = express();
-var server = http.createServer(router);
-var io = socketio.listen(server);
-var uuid = require('node-uuid');
-var wordSolver = require('./wordsolver/wordsolver.js')
+const http = require("http");
+const socketio = require("socket.io");
+const express = require("express");
+const router = express();
+const server = http.createServer(router);
+const io = socketio.listen(server);
+const _ = require("lodash");
+const uuid = require("uuid");
+const bodyParser = require('body-parser');
+const wordSolver = require("./wordsolver/wordsolver.js");
 
-var players={};
-var playersUID={};
-var gameTimer = false;
-var intermissionTimer = false;
+let players = {};
+let playersUId = {};
+let playersUIdMap = {};
+let gameTimer = false;
+let intermissionTimer = false;
 
-var {currentBoard, wordList} = wordSolver.generateNewGame()
-console.log('currentBoard', currentBoard, "wordList", wordList);
-router.use(bodyParser.urlencoded({extended: true}));
+let { currentBoard, wordList } = wordSolver.generateNewGame();
+// console.log('currentBoard', currentBoard, "wordList", wordList);
+// router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
-router.use(morgan('dev'));
-router.use(express.static('public'));
+// router.use(morgan('dev'));
+router.use(express.static("public"));
 
 function startGameTimer(varIO) {
-	var startGameTime = new Date();
-	var startGameTimerRef = setInterval(() => {
-		var elapsedGameTime = new Date() - startGameTime;
-		//2min 30sec game time
-		if(elapsedGameTime < 150000) {
-			varIO.emit('elapsedGameTime', elapsedGameTime);
+	const startGameTime = new Date();
+	let startGameTimerRef = setInterval(() => {
+		const elapsedGameTime = new Date() - startGameTime;
+		//2min sec game time
+		const gameTime = 120000;
+		if (elapsedGameTime < gameTime) {
+			let playerStats = playersRanking(players);
+			// console.log('playerStats',playerStats );
+			let varIOSockets = varIO.of("/").sockets;
+			for (let sckt in varIOSockets) {
+				// console.log('sckt', sckt);
+				let pUId = playersUIdMap[sckt];
+				varIOSockets[sckt].emit("updateStats", {
+					totalPlayers: playerStats.totalPlayers,
+					rank: playerStats[pUId].rank,
+					score: playerStats[pUId].score,
+					timeLeft: Math.floor((gameTime - elapsedGameTime) / 1000)
+				});
+			}
 		} else {
-			intermissionTimer=true;
-			gameTimer=false;
+			intermissionTimer = true;
+			gameTimer = false;
 			clearInterval(startGameTimerRef);
-			varIO.emit('start intermission');
+			varIO.emit("start intermission");
 			startIntermissionTimer(varIO);
 		}
 	}, 1000);
-
-	var rankEmit = setInterval(function() {
-		return function(p){
-			if(gameTimer===true) varIO.emit('ranking', p);
-			else clearInterval(rankEmit);
-		}(playersRanking(players))
-	}, 1234);
 }
 
-
 function startIntermissionTimer(varIO) {
-	var boardWords = wordSolver.generateNewGame();
+	let boardWords = wordSolver.generateNewGame();
 	currentBoard = boardWords.currentBoard;
 	wordList = boardWords.wordList;
-	var startIntermissionTime = new Date();
-	var startIntermissionTimerRef = setInterval(() => {
-		var elapsedIntermissionTime = new Date() - startIntermissionTime;
-			//30 sec intermission time
-		if(elapsedIntermissionTime < 30000) {
-			varIO.emit('elapsedIntermissionTime', elapsedIntermissionTime)
+	const startIntermissionTime = new Date();
+	let startIntermissionTimerRef = setInterval(() => {
+		const elapsedIntermissionTime = new Date() - startIntermissionTime;
+		//30 sec intermission time
+		const intermissionTime = 30000;
+		if (elapsedIntermissionTime < intermissionTime) {
+			varIO.emit(
+				"elapsedIntermissionTime",
+				Math.floor((intermissionTime - elapsedIntermissionTime) / 1000)
+			);
 		} else {
 			gameTimer = true;
 			intermissionTimer = false;
 			clearInterval(startIntermissionTimerRef);
 			clearScores(players);
-			varIO.emit('currentBoard', currentBoard);
+			varIO.emit("newGame", {
+				currentBoard,
+				wordList,
+				gameIntermission: intermissionTimer && !gameTimer
+			});
 			startGameTimer(varIO);
 		}
-	},1000);
+	}, 1000);
 }
 
-function sortDescNum(a,b){
-	return b[0]-a[0];
+function sortDescNum(a, b) {
+	return b.score - a.score;
 }
 
 function playersRanking(playersObj) {
-	var playersRankArr = [];
-	var playersRankObj={};
-	var objTemp ={};
-	for (prop in playersObj) playersRankArr.push([playersObj[prop]['score'], playersObj[prop]['uID']]);
+	let playersRankArr = [];
+	let playersRankObj = {};
+	let objTemp = {};
+	for (let prop in playersObj)
+		playersRankArr.push({
+			score: playersObj[prop]["score"],
+			uID: playersObj[prop]["uID"]
+		});
 	playersRankArr.sort(sortDescNum);
-	for (var i = 0; i < playersRankArr.length; i++) playersRankObj[playersRankArr[i][1]] = i;
-	return {uID: playersRankObj, totalPlayers: playersRankArr.length};
+	for (let i = 0; i < playersRankArr.length; i++)
+		playersUId[playersRankArr[i].uID] = {
+			score: playersRankArr[i].score,
+			rank: i + 1
+		};
+
+	playersUId.totalPlayers = playersRankArr.length;
+	return playersUId;
 }
 
-function clearScores(playersObj){
-	for(prop in playersObj) {
-		playersObj[prop]['score'] = 0;
-		playersObj[prop]['words'] = {};
+function clearScores(playersObj) {
+	for (let prop in playersObj) {
+		playersObj[prop]["score"] = 0;
+		playersObj[prop]["words"] = {};
 	}
 }
 
-
-io.on('connection', (socket) => {
-	if(!gameTimer && !intermissionTimer) {
-		gameTimer=true;
+io.on("connection", socket => {
+	if (!gameTimer && !intermissionTimer) {
+		gameTimer = true;
 		startGameTimer(io);
 	}
 
-	console.log('new player joined', socket.id);
+	console.log("new player joined", socket.id);
 
-	var uIDTemp = uuid.v1();
-	socket.emit('Set uID', uIDTemp)
-	players[socket.id]={score:0, words:{}, rank:0, 'uID':uIDTemp};
-
-	socket.emit('currentBoard', currentBoard);
-
-	socket.on('wordCheck',  (word) => {
-		if(gameTimer===true && wordList[word]) {
-			players[socket.id]['words'][word]=wordList[word];
-			players[socket.id]['score']+=word.length;
-			socket.emit('wordUp', word);
-		}
-		else socket.emit('wordToBigBird');
+	socket.emit("newGame", {
+		currentBoard,
+		wordList,
+		gameIntermission: intermissionTimer && !gameTimer
 	});
 
-	socket.on('disconnect',()=> {
+	const uIDTemp = uuid.v1();
+	playersUIdMap[socket.id] = uIDTemp;
+	players[socket.id] = { score: 0, words: {}, rank: 0, uID: uIDTemp };
+
+	socket.on("wordCheck", word => {
+		// console.log('word', word,socket.id);
+		if (gameTimer === false || !wordList[word]) socket.emit("wordNot");
+		else if (wordList[word]) {
+			players[socket.id]["words"][word] = wordList[word];
+			players[socket.id]["score"] += word.length;
+			socket.emit("updateScore", players[socket.id]["score"]);
+		}
+	});
+
+	socket.on("disconnect", () => {
 		delete players[socket.id];
-		console.log(socket.id + ' disconnected');
+		console.log(socket.id + " disconnected");
 	});
 });
 
-
-server.listen(process.env.PORT || 8080, process.env.IP || "0.0.0.0", ()=> {
-    var addr = server.address();
-    console.log("Chat server listening at", addr.address + ":" + addr.port);
+server.listen(process.env.PORT || 8080, process.env.IP || "0.0.0.0", () => {
+	const addr = server.address();
+	console.log("Chat server listening at", addr.address + ":" + addr.port);
 });

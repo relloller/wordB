@@ -1,118 +1,61 @@
+<!-- wordword.html -->
+
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word is Bond</title>
-    <link rel="stylesheet" href="css/styleflexbox.css" type="text/css" />
-    <script src="js/firebase.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/wordword.css">
 </head>
-
 <body>
-    <div id="navProfile"></div>
-    <div id="wordUpBoard">
-        <div class="rowsContainer">
-            <div class="rows">A</div>
-            <div class="rows">B</div>
-            <div class="rows">C</div>
-            <div class="rows">D</div>
-            <div class="rows">E</div>
-            <div class="rows">F</div>
-        </div>
-        <div class="rowsContainer">
-            <div class="rows">A</div>
-            <div class="rows">B</div>
-            <div class="rows">C</div>
-            <div class="rows">D</div>
-            <div class="rows">E</div>
-            <div class="rows">F</div>
-        </div>
-        <div class="rowsContainer">
-            <div class="rows">A</div>
-            <div class="rows">B</div>
-            <div class="rows">C</div>
-            <div class="rows">D</div>
-            <div class="rows">E</div>
-            <div class="rows">F</div>
-        </div>
-        <div class="rowsContainer">
-            <div class="rows">A</div>
-            <div class="rows">B</div>
-            <div class="rows">C</div>
-            <div class="rows">D</div>
-            <div class="rows">E</div>
-            <div class="rows">F</div>
-        </div>
-        <div class="rowsContainer">
-            <div class="rows">A</div>
-            <div class="rows">B</div>
-            <div class="rows">C</div>
-            <div class="rows">D</div>
-            <div class="rows">E</div>
-            <div class="rows">F</div>
-        </div>
-        <div class="rowsContainer">
-            <div class="rows">A</div>
-            <div class="rows">B</div>
-            <div class="rows">C</div>
-            <div class="rows">D</div>
-            <div class="rows">E</div>
-            <div class="rows">F</div>
-        </div>
-    </div>
-  
-    
-        <div id="statsDiv">
-            <div id="pointsContainer">
-                <div id="pointsDiv">Score: 0</div>
-                <div id="pointsWordDiv"></div>
-            </div>
-            <div id="timerDiv">0:00</div>
-            <div id="rankingDiv">Rank</div>
-        </div>
-        <br>
-        <div id="bondedWord"></div>
-        <div class="fillers">
-            <span id="userDiv"></span>
-            <br>
-            <span id="highScore"></span>
-            <br>
-            <span id="logOut">Logout</span>
-        </div>
-        <div id="foundWordsList"></div>
-        <div class="fillers"> </div>
-        <div class="fillersfooter"> </div>
-    
-    <div class="overlay">
-        <div id="loginForm">
-            <input type="text" class="zocial-dribbble" placeholder="Enter your email" id="eMail" />
-            <input type="password" placeholder="Password" id="passWord" />
-            <input type="submit" value="Login" id="loginButton" />
-            <a id="lostpassword" href="">Forgot your password?<br></a>
-            <p id="registerLink">
-                <br>New User? Signup for free.
-                <input type="submit" value="Signup" id="signUpButtonDisplay" />
-            </p>
-            <p id="guestLink">I hate making accounts. Let me in.
-                <br>
-                <input type="submit" value="Guest Access" id="guestButton" />
-            </p>
-        </div>
-        <div id='signUpForm'>
-            <input type="text" class="zocial-dribbble" placeholder="Choose your username" id="userNameSignUp" />
-            <input type="text" class="zocial-dribbble" placeholder="Enter your email" id="eMailSignUp" />
-            <input type="password" placeholder="Password" id="passWordSignUp" />
-            <input type="submit" value="Sign up" id="registerButton" />
-            <p id="alreadyAccount">
-                <br>Already have an account? Login here.</p>
-        </div>
-    </div>
-    </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="js/userAuth.js"></script>
-    <script src="js/wordUpDesktop.js"></script>
-</body>
-<!-- relloller wuz here -->
 
+    <div id='wordUpBoard'>
+        <div class='boardRow'>
+            <div id='l00' class='letterCell'>A</div>
+            <div id='l01' class='letterCell'>B</div>
+            <div id='l02'class='letterCell'>C</div>
+            <div id='l03'class='letterCell'>D</div>
+            <div id='l04'class='letterCell'>E</div>
+        </div>      
+        <div class='boardRow'>
+            <div id='l05' class='letterCell'>F</div>
+            <div id='l06' class='letterCell'>G</div>
+            <div id='l07' class='letterCell'>H</div>
+            <div id='l08' class='letterCell'>I</div>
+            <div id='l09' class='letterCell'>J</div>
+        </div>      
+        <div class='boardRow'>
+            <div id='l10' class='letterCell'>K</div>
+            <div id='l11' class='letterCell'>L</div>
+            <div id='l12' class='letterCell'>M</div>
+            <div id='l13' class='letterCell'>N</div>
+            <div id='l14' class='letterCell'>O</div>
+        </div>      
+        <div class='boardRow'>
+            <div id='l15' class='letterCell'>P</div>
+            <div id='l16' class='letterCell'>Q</div>
+            <div id='l17' class='letterCell'>R</div>
+            <div id='l18' class='letterCell'>S</div>
+            <div id='l19' class='letterCell'>T</div>
+        </div>      
+        <div class='boardRow'>
+            <div id='l20' class='letterCell'>U</div>
+            <div id='l21' class='letterCell'>V</div>
+            <div id='l22' class='letterCell'>W</div>
+            <div id='l23' class='letterCell'>X</div>
+            <div id='l24' class='letterCell'>Y</div>
+        </div>      
+    </div>
+    <div class= 'statsColumn'>
+        <div id ='scoreDiv'>Score: 0</div>
+        <div id='timerDiv'>Timer:</div>
+        <div id='rankDiv'>Rank: 0</div>
+    </div>
+    <div id='currentWordDiv'></div>
+    <div id='wordSolutionsList' class="hideSolutions"></div>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src='js/wordword.js'></script>
+</body>
 </html>
