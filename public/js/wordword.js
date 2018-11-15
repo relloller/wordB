@@ -208,8 +208,7 @@
       if (touchInProgress || gameIntermission) return;
       currentWordDiv.innerHTML = "";
       touchInProgress = true;
-      const {posX,posY} = {ev.touches[0].clientX,ev.touches[0].clientY};
-      var elemCurrent = document.elementFromPoint(posX, posY);
+      var elemCurrent = document.elementFromPoint(ev.touches[0].clientX, ev.touches[0].clientY);
       let cId;
       if (elemCurrent) cId = elemCurrent.id || false;
       if (cId === "wordUpBoard" || cId === false) return;
@@ -262,8 +261,7 @@
       ev.stopImmediatePropagation();
 
       if (!touchInProgress || gameIntermission) return;
-      const {posX,posY} = {ev.touches[0].clientX,ev.touches[0].clientY};
-      var elemCurrent = document.elementFromPoint(posX, posY);
+      var elemCurrent = document.elementFromPoint(ev.touches[0].clientX,ev.touches[0].clientY);
       let cId = elemCurrent.id || false;
       if (cId === "wordUpBoard" || cId === false) return;
 
@@ -366,7 +364,7 @@
           wordsFound[currentWord] = true;
           socket.emit("wordCheck", currentWord);
           let rowsmini = document.getElementsByClassName("rowsmini");
-          for (var i = 0; i < rowsmini.length; i++) {
+          for (let i = 0; i < rowsmini.length; i++) {
             rowsmini[i].classList.toggle("miniValid");
           }
           for (let i = 0; i < letterCells.length; i++) {
